@@ -1,5 +1,7 @@
 var http = require('http');
 var websocket = require('websocket').server;
+var fs = require('fs');
+var path = require('path');
 
 var count = 0;
 var clients = {};
@@ -23,14 +25,23 @@ var presenter = http.createServer(function(req, res) {
  
         // SEND CURRENT PAGE TO AUDIENCE
         for ( ii in clients ) {
-            clients[ii].sendUTF(page); 
+            clients[ii].sendUTF('' + page); 
         }
     }
 });
 presenter.listen(2347);
 
 var audienceNotes = http.createServer(function(req, res) {
-
+    var filePath = path.join(__dirname, 'audienceNotes.html');
+    fs.readFile(filePath, {encoding: 'utf-8'}, function(err, data) {
+        if ( !err ) {
+            res.writeHead(200, {"Content-Type": "text/html"});
+            res.write(data);
+            res.end();
+        }
+        else { console.log(err); }
+    });
+    
 });
 audienceNotes.listen(2000);
 

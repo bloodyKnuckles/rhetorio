@@ -5,6 +5,16 @@
 
 <body>
 Audience Notes
+<div id="message"></div>
 
+<script>
+
+var ws = new WebSocket('ws://localhost:2723', 'echo-protocol');
+ws.addEventListener('message', function(evt) {
+    var message = document.getElementById('message');
+    message.innerHTML += evt.data + '<br>';
+});
+
+</script>
 </body>
 </html>
