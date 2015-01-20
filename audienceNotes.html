@@ -9,7 +9,10 @@ Audience Notes
 
 <script>
 
-var ws = new WebSocket('ws://localhost:2723', 'echo-protocol');
+//var myIP = '192.168.181.145';
+var myIP = 'localhost';
+
+var ws = new WebSocket('ws://' + myIP + ':2723', 'echo-protocol');
 ws.addEventListener('message', function(evt) {
     var message = document.getElementById('message');
     message.innerHTML += evt.data + '<br>';

@@ -20,8 +20,17 @@ var presenter = http.createServer(function(req, res) {
         console.log('request for page ' + page + ' received');
         
         // SEND PAGE TO PRESENTER
-        res.writeHead(200, {"Content-Type": "text/plain"});
-        res.end('' + page + '\n'); 
+        res.writeHead(200, {"Content-Type": "text/html"});
+        //res.end('' + page + '\n'); 
+    var filePath = path.join(__dirname, '' + page + '.html');
+    fs.readFile(filePath, {encoding: 'utf-8'}, function(err, data) {
+        if ( !err ) {
+            res.writeHead(200, {"Content-Type": "text/html"});
+            res.write(data);
+            res.end();
+        }
+        else { console.log(err); }
+    });
  
         // SEND CURRENT PAGE TO AUDIENCE
         for ( ii in clients ) {
@@ -29,7 +38,7 @@ var presenter = http.createServer(function(req, res) {
         }
     }
 });
-presenter.listen(2347);
+presenter.listen(9147);
 
 var audienceNotes = http.createServer(function(req, res) {
     var filePath = path.join(__dirname, 'audienceNotes.html');
