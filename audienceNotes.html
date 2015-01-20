@@ -1,6 +1,4 @@
-<html>
-<head>
-<title>Audience Notes</title>
+<html> <head> <title>Audience Notes</title>
 <style>.slidenotes { display:none; }</style>
 </head>
 
@@ -36,10 +34,7 @@ Audience Notes
 <textarea id="notes" cols="80" rows="40"></textarea>
 <script>
 
-//var myIP = '192.168.181.145';
-var myIP = 'localhost';
-
-var ws = new WebSocket('ws://' + myIP + ':2723', 'echo-protocol');
+var ws = new WebSocket('ws://' + location.hostname + ':2723', 'echo-protocol');
 var notes = document.getElementById('notes');
 var slides = [0];
 
@@ -47,11 +42,11 @@ ws.addEventListener('message', function(evt) {
     console.log(evt.data);
     var slide = parseInt(evt.data);
 
-    if ( typeof slide == "number" ) {
+    if ( typeof slide == "number" && !isNaN(slide) ) {
         for ( ii = 1; ii <= slide; ii++ ) {
             if ( !slides[ii] ) {
                 var slidenotes = document.getElementById('' + ii).innerHTML;
-                notes.innerHTML += slidenotes;
+                notes.value += slidenotes;
                 slides[ii] = ii;
             }
         }
