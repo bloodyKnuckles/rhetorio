@@ -1,21 +1,62 @@
 <html>
 <head>
 <title>Audience Notes</title>
+<style>.slidenotes { display:none; }</style>
 </head>
 
 <body>
 Audience Notes
 <div id="message"></div>
 
+<div id="1" class="slidenotes"># SLIDE ONE
+
+
+</div>
+
+<div id="2" class="slidenotes"># SLIDE TWO
+
+
+</div>
+
+<div id="3" class="slidenotes"># SLIDE THREE
+
+
+</div>
+
+<div id="4" class="slidenotes"># SLIDE FOUR 
+
+
+</div>
+
+<div id="5" class="slidenotes"># SLIDE FIVE
+
+
+</div> 
+
+<textarea id="notes" cols="80" rows="40"></textarea>
 <script>
 
 //var myIP = '192.168.181.145';
 var myIP = 'localhost';
 
 var ws = new WebSocket('ws://' + myIP + ':2723', 'echo-protocol');
+var notes = document.getElementById('notes');
+var slides = [0];
+
 ws.addEventListener('message', function(evt) {
-    var message = document.getElementById('message');
-    message.innerHTML += evt.data + '<br>';
+    console.log(evt.data);
+    var slide = parseInt(evt.data);
+
+    if ( typeof slide == "number" ) {
+        for ( ii = 1; ii <= slide; ii++ ) {
+            if ( !slides[ii] ) {
+                var slidenotes = document.getElementById('' + ii).innerHTML;
+                notes.innerHTML += slidenotes;
+                slides[ii] = ii;
+            }
+        }
+    }
+    else { console.log('not valid or slide loaded'); }
 });
 
 </script>
